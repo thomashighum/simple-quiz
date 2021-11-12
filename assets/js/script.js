@@ -78,12 +78,11 @@ var questions = [
   }
 ];
 
-// hide the initial question button div and append start button
+// hide the initial question button div and player div and append start button
 function hide() {
   $('.questionBox').hide()
   $('.player').hide()
   startButton.appendTo($(".start"));
-  
 }
 
 hide()
@@ -116,10 +115,14 @@ function mainfunction(event) {
     console.log(userChoice)
     if (userChoice === questions[i].answer) {
       score++
-      isWin = true;
+      questionBox.removeClass('border border-danger border-5')
+      questionBox.addClass('border border-success border-5')
+      timerCount++;
       console.log(score)
     } else {
       score--
+      questionBox.removeClass('border border-success border-5')
+      questionBox.addClass('border border-danger border-5')
       console.log(score)
     }
     i++
