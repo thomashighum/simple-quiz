@@ -170,8 +170,8 @@ function renderScores() {
   scoresList.text('');
   for (var x = 0; x < storedScores.length; x++) {
     // storedScores.forEach(function () {
-        
-    var newLi = $('<li></li>').text(storedScores[x].name + '--' + storedScores[x].score);
+    var newLi = $('<li></li>').text(storedScores[x].name + ' ⚊ ' + storedScores[x].score);
+    newLi.addClass("list-group-item rounded")
     // newLi.textContent = `${scores.name} -- ${scores.score}`
     scoresList.append(newLi)
   }
