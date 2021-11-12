@@ -7,12 +7,17 @@ var questionText = $('.questionText');
 var questionBox = $('.questionBox');
 var mainSpace = $('.mainSpace');
 var startButton = $('<input type="button" value="Start" class="btn btn-primary my-5 fs-1 fw-bold" />');
-var selectedAnswer = $('.btn-group')
-var questionNumber = $('.questionNumber')
+var selectedAnswer = $('.btn-group');
+var questionNumber = $('.questionNumber');
 var youLost = $('<input type="button" value="Start" class="btn btn-primary my-5 fs-1 fw-bold" />');
+var scoresList = $('.scoresList');
+var submitButton = $('.submitButton');
 
 var score = 0;
 i = 0;
+
+var storedScores = JSON.parse(localStorage.getItem('scores')) || [];
+// console.log(storedScores);
 
 
 var timer;
@@ -87,6 +92,7 @@ function hide() {
 
 hide()
 
+
 // function from START click
 function mainfunction(event) {
   // START timer function
@@ -112,18 +118,18 @@ function mainfunction(event) {
   function checkAnswer(event) {
     selectedAnswer.unbind()
     var userChoice = event.target.textContent;
-    console.log(userChoice)
+    // console.log(userChoice)
     if (userChoice === questions[i].answer) {
       score++
       questionBox.removeClass('border border-danger border-5')
       questionBox.addClass('border border-success border-5')
       timerCount++;
-      console.log(score)
+      // console.log(score)
     } else {
       score--
       questionBox.removeClass('border border-success border-5')
       questionBox.addClass('border border-danger border-5')
-      console.log(score)
+      // console.log(score)
     }
     i++
     if (i < questions.length) { 
@@ -155,18 +161,46 @@ function mainfunction(event) {
   }, 1000);
 }
 }
-  
-// display correct or incorrect
 
   // STORE PLAYER, Time left, AND SCORE, DISPLAY IN HIGHSCORE, CLEAR PLAYER and SCORE
 
 
+function renderScores() {
 
+  scoresList.text('');
+  for (var x = 0; x < storedScores.length; x++) {
+    // storedScores.forEach(function () {
+        
+    var newLi = $('<li></li>').text(storedScores[x].name + '--' + storedScores[x].score);
+    // newLi.textContent = `${scores.name} -- ${scores.score}`
+    scoresList.append(newLi)
+  }
+
+}
+renderScores()
 
 
 // Event listener for new start button
 
-// selectedAnswer.on('click', checkAnswer)
+submitButton.on('click', function () {
+  var trueScore = score + timerCount;
+  var playerName = $('.playerForm').val()
+  var playerObj = {
+    name: playerName,
+    score: trueScore,
+  }
+  storedScores.push(playerObj);
+  localStorage.setItem("scores", JSON.stringify(storedScores));
+  $('.player').hide();
+  startButton.show();
+  // console.log(trueScore)
+  // console.log(playerName)
+
+  renderScores()
+  i = 0;
+   $('.playerForm').val('')
+  }
+  )
 
 startButton.on('click', mainfunction)
 
